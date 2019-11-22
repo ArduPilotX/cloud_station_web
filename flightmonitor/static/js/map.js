@@ -32,7 +32,7 @@ var map = new mapboxgl.Map({
           }, 20);
       map.loadImage('https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/BSicon_AIRCLUB.svg/1920px-BSicon_AIRCLUB.svg.png', function(error, image) {
           if (error) throw error;
-          map.addImage('cat', image);
+          map.addImage('plane', image);
             map.addLayer({
                 "id": "points",
                 "type": "symbol",
@@ -50,7 +50,7 @@ var map = new mapboxgl.Map({
                     }
                     },
                 "layout": {
-                    "icon-image": "cat",
+                    "icon-image": "plane",
                     "icon-size": 0.04
                 }
             });
