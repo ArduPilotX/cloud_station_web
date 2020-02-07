@@ -42,7 +42,7 @@ browserSocket.onmessage = function (e) {
         droneMap.get(temp["droneid"]).markerPopup = new mapboxgl.Popup({ offset: 25 });
         droneMap.get(temp["droneid"]).markerTraker = new mapboxgl.Marker(el).addTo(map);
         
-        if (marker["geometry"]["coordinates"].equals([null, null])) {
+        if (marker.coordinates[0]!=null) {
             droneMap.get(temp["droneid"]).markerTraker.setLngLat(marker.coordinates)
                 .setPopup(droneMap.get(temp["droneid"]).markerPopup
                     .setHTML('<h3>' + marker.properties.Name + "</h3><p>" + "Longitude: " + marker.coordinates[0] + " Latitude: " + marker.coordinates[1] + "</p>")
@@ -56,7 +56,7 @@ browserSocket.onmessage = function (e) {
     else {
         storeTodroneMap(temp);
         marker = droneMap.get(temp["droneid"]).geojson;
-        if (marker["geometry"]["coordinates"].equals([null, null])) {
+        if (marker.coordinates[0]!=null) {
             droneMap.get(temp["droneid"]).markerPopup.setHTML('<h3>' + marker.properties.Name + "</h3><p>" + "Longitude: " + marker.coordinates[0] + " Latitude: " + marker.coordinates[1] + "</p>");
         }
         // droneMap.get(temp["droneid"]).markerTraker.setLngLat(marker.coordinates).setPopup(new mapboxgl.Popup({ offset: 25 })
@@ -82,7 +82,7 @@ function storeTodroneMap(temp) {
     var droneid = temp["droneid"];
     if (temp["type"] == "location") {
         // console.log(droneMap.get(droneid));
-        if (droneMap.get(droneid)["latitude"] == "NULL")
+        if (droneMap.get(droneid)["latitude"] == null)
             droneMap.get(droneid)["latitude"] = temp["latitude"];
         else {
             var difference = droneMap.get(droneid)["latitude"] - temp["latitude"];
@@ -91,7 +91,7 @@ function storeTodroneMap(temp) {
             else
                 document.querySelector('#telemetry-log').value += "error in latitude.\n";
         }
-        if (droneMap.get(droneid)["longitude"] == "NULL")
+        if (droneMap.get(droneid)["longitude"] == null)
             droneMap.get(droneid)["longitude"] = temp["longitude"];
         else {
             var difference = droneMap.get(droneid)["longitude"] - temp["longitude"];
