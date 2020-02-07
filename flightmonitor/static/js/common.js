@@ -42,7 +42,7 @@ browserSocket.onmessage = function (e) {
         droneMap.get(temp["droneid"]).markerPopup = new mapboxgl.Popup({ offset: 25 });
         droneMap.get(temp["droneid"]).markerTraker = new mapboxgl.Marker(el).addTo(map);
         
-        if (marker["geometry"]["coordinates"] != [null, null]) {
+        if (marker["geometry"]["coordinates"].equals([null, null])) {
             droneMap.get(temp["droneid"]).markerTraker.setLngLat(marker.coordinates)
                 .setPopup(droneMap.get(temp["droneid"]).markerPopup
                     .setHTML('<h3>' + marker.properties.Name + "</h3><p>" + "Longitude: " + marker.coordinates[0] + " Latitude: " + marker.coordinates[1] + "</p>")
@@ -56,7 +56,7 @@ browserSocket.onmessage = function (e) {
     else {
         storeTodroneMap(temp);
         marker = droneMap.get(temp["droneid"]).geojson;
-        if (marker["geometry"]["coordinates"] != [null, null]) {
+        if (marker["geometry"]["coordinates"].equals([null, null])) {
             droneMap.get(temp["droneid"]).markerPopup.setHTML('<h3>' + marker.properties.Name + "</h3><p>" + "Longitude: " + marker.coordinates[0] + " Latitude: " + marker.coordinates[1] + "</p>");
         }
         // droneMap.get(temp["droneid"]).markerTraker.setLngLat(marker.coordinates).setPopup(new mapboxgl.Popup({ offset: 25 })
