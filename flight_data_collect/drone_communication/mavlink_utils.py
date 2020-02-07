@@ -38,8 +38,6 @@ def _log_latest_location(mavlink, drone_id):
         Location_log.objects.create(timestamp = datetime.now(), \
             latitude=global_position_int.lat/10**7, longitude=global_position_int.lon/10**7, \
             altitude=global_position_int.alt, heading=global_position_int.hdg, droneid=drone_id)
-    elif gps_raw and gps_raw.fix_type < mavlink_constants.GPS_2D_FIX:
-        send_message_to_clients("WARNING: NO GPS or NO FIX")
 
 
 def _get_mavlink_message(mavlink, message_name)->dict:
