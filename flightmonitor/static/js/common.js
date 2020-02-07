@@ -8,25 +8,28 @@ var droneMap = new Map(); // initialize an empty map
 browserSocket.onmessage = function (e) {
     var data = JSON.parse(e.data);
     var message = data['message'];
-    document.querySelector('#telemetry-log').value += (message + '\n');
+    document.querySelector('#telemetry-log').value += (message + '\n');``
     var temp = JSON.parse(data['message']);
-    if (!droneMap.has(temp["droneid"])) {
+    if (!temp.hasOwnProperty("droneid"))
+        return;
+    if (!droneMap.has(temp['droneid'])) {
         var tempInfo = {
-            "longitude":"NULL",
-            "latitude":"NULL",
-            "yaw":"NULL",
-            "pitch":"NULL",
-            "roll":"NULL",
-            "speed":"NULL",
-            "geojson":{
-            "type": "Feature",
-                "properties": {"Name":temp["droneid"]
+            "longitude": null,
+            "latitude": null,
+            "yaw": null,
+            "pitch": null,
+            "roll": null,
+            "speed": null,
+            "geojson": {
+                "type": "Feature",
+                "properties": {
+                    "Name": temp["droneid"]
                 },
-              "geometry": {
-                "type": "Point",
-                "coordinates": ["NULL","NULL"]
-            },
-            },"markerTraker":null,
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [null, null]
+                },
+            }, "markerTraker": null,
             "markerPopup":null
         };
         droneMap.set(temp["droneid"],tempInfo);
