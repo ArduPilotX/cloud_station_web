@@ -26,6 +26,7 @@ browserSocket.onmessage = function (e) {
         };
         drones.set(droneid, tempInfo);
         updateDroneIdTable(droneid)
+        addTab(droneid);
     }
     updateDrones(msg);
     updateDroneLocation(droneid);
@@ -167,3 +168,5 @@ function disconnectVehicle() {
     xmlHttp.open("GET", url, true); // true for asynchronous 
     xmlHttp.send(null);
 }
+
+
