@@ -25,17 +25,24 @@ def get_mavlink_messages_periodically(connect_address):
     for message_type in mavlink_constants.USEFUL_MESSAGES:
         msg = _get_mavlink_message(mavlink, message_type).to_dict()
         if msg:
-            send_message_to_clients(json.dumps(msg))
             if msg.get("mavpackettype", "") == mavlink_constants.GPS_RAW_INT and _is_gps_fix(msg):
                 location_msg = _get_mavlink_message(mavlink, mavlink_constants.GLOBAL_POSITION_INT)
-                if msg:
+                if location_msg:
                     send_message_to_clients(json.dumps(location_msg))
+            parse_mavlink_msg(msg)
+            send_message_to_clients(json.dumps(msg))
+            
 
 def _is_gps_fix(msg)->bool:
     fix_type = int(msg.get("fix_type", "0"))
     if fix_type >= mavlink_constants.GPS_2D_FIX:
         return True
     return False
+
+def parse_mavlink_msg(msg):
+    msg_type = msg.get("mavpackettype", "")
+    if msg_type==mavlink_constants.GPS_RAW_INT:
+        msg["fix_type"] = mavlink_constants.GPS_FIX_TYPE.get(msg["fix_type"], "invalid_fix_type")
 
 def _log_latest_orientation(mavlink, drone_id):
     msg = _get_mavlink_message(mavlink, mavlink_constants.ORIENTATION_MESSAGE_NAME) 
