@@ -43,7 +43,8 @@ def parse_mavlink_msg(msg):
     if msg_type==mavlink_constants.GPS_RAW_INT:
         msg["fix_type"] = mavlink_constants.GPS_FIX_TYPE.get(msg["fix_type"], "invalid_fix_type")
     if msg_type==mavlink_constants.HEARTBEAT:
-        print(mavutil.mode_mapping_bynumber[msg["base_mode"]])
+        # print(mavutil.mode_mapping_bynumber[msg["base_mode"]])
+        pass
 
 def _log_latest_orientation(mavlink, drone_id):
     msg = _get_mavlink_message(mavlink, mavlink_constants.ORIENTATION_MESSAGE_NAME) 
