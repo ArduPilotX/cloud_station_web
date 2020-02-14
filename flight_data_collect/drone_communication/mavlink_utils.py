@@ -67,8 +67,8 @@ def _get_mavlink_message(mavlink, message_name, droneid:int)->dict:
         msg = mavlink.recv_match(type=message_name, blocking=True, timeout=3)
         if msg.get_type() != 'BAD_DATA':
             msg = msg.to_dict()
-            msg["droneid"] = droneid
+            msg["droneid"] = int(droneid)
             return msg
     except Exception as e:
         print(e)
-        return {"ERROR": {f"no {message_name} received"}, "droneid":droneid}
+        return {"ERROR": {f"no {message_name} received"}, "droneid":int(droneid)}
