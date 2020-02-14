@@ -5,6 +5,8 @@ from flight_data_collect.models import Telemetry_log, Location_log
 from flight_data_collect.drone_communication import mavlink_constants 
 from flightmonitor.consumers import send_message_to_clients
 import socket
+import json
+
 SERVER_IP = socket.gethostbyname(socket.gethostname())
 
 def connect_mavlink(connect_address: str)->bool:
@@ -20,9 +22,10 @@ def connect_mavlink(connect_address: str)->bool:
 def get_mavlink_messages_periodically(connect_address):
     mavlink = mavutil.mavlink_connection(SERVER_IP+':'+connect_address)
     msg = mavlink.wait_heartbeat(timeout=8)
-    if msg:
-        _log_latest_orientation(mavlink, connect_address)
-        _log_latest_location(mavlink, connect_address)
+    for message_type in mavlink_constants.USEFUL_MESSAGES:
+        msg = _get_mavlink_message(mavlink, message_type).to_dict()
+        if msg:
+            send_message_to_clients(json.dumps(msg))
 
 def _log_latest_orientation(mavlink, drone_id):
     msg = _get_mavlink_message(mavlink, mavlink_constants.ORIENTATION_MESSAGE_NAME) 
@@ -42,8 +45,9 @@ def _log_latest_location(mavlink, drone_id):
 
 def _get_mavlink_message(mavlink, message_name)->dict:
     try:
-        msg = mavlink.recv_match(type=message_name, blocking=True, timeout=4)
+        msg = mavlink.recv_match(type=message_name, blocking=True, timeout=3)
         if msg.get_type() != 'BAD_DATA':
             return msg
     except Exception as e:
         print(e)
+        return {"ERROR": msg}
