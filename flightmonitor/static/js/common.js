@@ -16,7 +16,7 @@ browserSocket.onmessage = function (e) {
         drone = new Drone(droneID);
         droneMap.set(droneID, drone); //add new drone to the map
         storeTodroneMap(temp);
-        if (temp["type"] == "location") {//create html element for the new marker [only initialize if the first data has location]
+        if (temp["mavpackettype"] == "GLOBAL_POSITION_INT") {//create html element for the new marker [only initialize if the first data has location]
             var el = document.createElement('div');
             el.className = 'marker';
             drone.createPopup(new mapboxgl.Popup({offset: 25}));
@@ -65,10 +65,10 @@ browserSocket.onmessage = function (e) {
 function storeTodroneMap(tempPack) {
     let droneID = tempPack["droneid"];
     let storeStruct = droneMap.get(droneID);
-    if (tempPack["type"] == "location") {
+    if (tempPack["type"] == "GLOBAL_POSITION_INT") {
         storeStruct.updateLocation(tempPack["longitude"], tempPack["latitude"]);
         storeStruct.updateAlt(tempPack["altitude"]);
-    } else if (tempPack["type"] == "altitude") {
+    } else if (tempPack["type"] == "ATTITUDE") {
         storeStruct.updateYaw(tempPack["yaw"]);
         storeStruct.updateRoll(tempPack["roll"]);
         storeStruct.updatePitch(tempPack["pitch"]);
