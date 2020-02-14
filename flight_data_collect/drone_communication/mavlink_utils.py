@@ -22,8 +22,10 @@ def connect_mavlink(connect_address: str)->bool:
 def get_mavlink_messages_periodically(connect_address):
     mavlink = mavutil.mavlink_connection(SERVER_IP+':'+connect_address)
     msg = mavlink.wait_heartbeat(timeout=8)
+    if msg:
+        send_message_to_clients(json.dumps(msg))
     for message_type in mavlink_constants.USEFUL_MESSAGES:
-        msg = _get_mavlink_message(mavlink, message_type).to_dict()
+        msg = _get_mavlink_message(mavlink, message_type)
         if msg:
             if msg.get("mavpackettype", "") == mavlink_constants.GPS_RAW_INT and _is_gps_fix(msg):
                 location_msg = _get_mavlink_message(mavlink, mavlink_constants.GLOBAL_POSITION_INT)
@@ -64,7 +66,7 @@ def _log_latest_location(mavlink, drone_id):
 
 def _get_mavlink_message(mavlink, message_name)->dict:
     try:
-        msg = mavlink.recv_match(type=message_name, blocking=True, timeout=3)
+        msg = mavlink.recv_match(type=message_name, blocking=True, timeout=3).to_dict()
         if msg.get_type() != 'BAD_DATA':
             return msg
     except Exception as e:
