@@ -35,7 +35,7 @@ def get_mavlink_messages_periodically(connect_address):
 
 def _is_gps_fix(msg)->bool:
     fix_type = int(msg.get("fix_type", "0"))
-    if fix_type >= mavlink_constants.GPS_2D_FIX:
+    if fix_type >= 2: #2D_fix
         return True
     return False
 
