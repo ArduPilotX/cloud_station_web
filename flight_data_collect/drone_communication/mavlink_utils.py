@@ -63,9 +63,9 @@ def _log_latest_location(mavlink, drone_id):
 
 def _get_mavlink_message(mavlink, message_name)->dict:
     try:
-        msg = mavlink.recv_match(type=message_name, blocking=True, timeout=3).to_dict()
+        msg = mavlink.recv_match(type=message_name, blocking=True, timeout=3)
         if msg.get_type() != 'BAD_DATA':
-            return msg
+            return msg.to_dict()
     except Exception as e:
         print(e)
         return {"ERROR": msg}
