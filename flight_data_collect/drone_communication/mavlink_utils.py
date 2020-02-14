@@ -22,7 +22,7 @@ def connect_mavlink(connect_address: str)->bool:
 def get_mavlink_messages_periodically(connect_address):
     mavlink = mavutil.mavlink_connection(SERVER_IP+':'+connect_address)
     for message_type in mavlink_constants.USEFUL_MESSAGES:
-        msg = _get_mavlink_message(mavlink, message_type)
+        msg = _get_mavlink_message(mavlink, message_type, connect_address)
         if msg:
             if msg.get("mavpackettype", "") == mavlink_constants.GPS_RAW_INT and _is_gps_fix(msg):
                 location_msg = _get_mavlink_message(mavlink, mavlink_constants.GLOBAL_POSITION_INT)
@@ -62,11 +62,13 @@ def _log_latest_location(mavlink, drone_id):
             altitude=global_position_int.alt, heading=global_position_int.hdg, droneid=drone_id)
 
 
-def _get_mavlink_message(mavlink, message_name)->dict:
+def _get_mavlink_message(mavlink, message_name, droneid:int)->dict:
     try:
         msg = mavlink.recv_match(type=message_name, blocking=True, timeout=3)
         if msg.get_type() != 'BAD_DATA':
-            return msg.to_dict()
+            msg = msg.to_dict()
+            msg["droneid"] = droneid
+            return msg
     except Exception as e:
         print(e)
-        return {"ERROR": {f"no {message_name} received"}}
+        return {"ERROR": {f"no {message_name} received"}, "droneid":droneid}
