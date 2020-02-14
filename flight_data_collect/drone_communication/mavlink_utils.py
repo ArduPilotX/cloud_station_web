@@ -69,4 +69,4 @@ def _get_mavlink_message(mavlink, message_name)->dict:
             return msg.to_dict()
     except Exception as e:
         print(e)
-        return {"ERROR": msg}
+        return {"ERROR": {f"no {message_name} received"}}
