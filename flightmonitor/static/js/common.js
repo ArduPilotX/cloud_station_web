@@ -65,10 +65,10 @@ browserSocket.onmessage = function (e) {
 function storeTodroneMap(tempPack) {
     let droneID = tempPack["droneid"];
     let storeStruct = droneMap.get(droneID);
-    if (tempPack["type"] == "GLOBAL_POSITION_INT") {
-        storeStruct.updateLocation(tempPack["longitude"], tempPack["latitude"]);
-        storeStruct.updateAlt(tempPack["altitude"]);
-    } else if (tempPack["type"] == "ATTITUDE") {
+    if (tempPack["mavpackettype"] == "GLOBAL_POSITION_INT") {
+        storeStruct.updateLocation(tempPack["lon"], tempPack["lat"]);
+        storeStruct.updateAlt(tempPack["alt"]);
+    } else if (tempPack["mavpackettype"] == "ATTITUDE") {
         storeStruct.updateYaw(tempPack["yaw"]);
         storeStruct.updateRoll(tempPack["roll"]);
         storeStruct.updatePitch(tempPack["pitch"]);
