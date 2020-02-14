@@ -21,9 +21,6 @@ def connect_mavlink(connect_address: str)->bool:
 @background(schedule=0)
 def get_mavlink_messages_periodically(connect_address):
     mavlink = mavutil.mavlink_connection(SERVER_IP+':'+connect_address)
-    msg = mavlink.wait_heartbeat(timeout=8)
-    if msg:
-        send_message_to_clients(json.dumps(msg))
     for message_type in mavlink_constants.USEFUL_MESSAGES:
         msg = _get_mavlink_message(mavlink, message_type)
         if msg:
@@ -45,8 +42,8 @@ def parse_mavlink_msg(msg):
     msg_type = msg.get("mavpackettype", "")
     if msg_type==mavlink_constants.GPS_RAW_INT:
         msg["fix_type"] = mavlink_constants.GPS_FIX_TYPE.get(msg["fix_type"], "invalid_fix_type")
-    if msg_type==mavlink_constants.MAV_MODE:
-        pass
+    if msg_type==mavlink_constants.HEARTBEAT:
+        print(mavutil.mode_mapping_bynumber[msg["base_mode"]])
 
 def _log_latest_orientation(mavlink, drone_id):
     msg = _get_mavlink_message(mavlink, mavlink_constants.ORIENTATION_MESSAGE_NAME) 
