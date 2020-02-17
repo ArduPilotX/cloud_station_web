@@ -8,7 +8,6 @@ GPS_FIX_TYPE = {
     2 : "GPS_2D_FIX",
     3 : "GPS_3D_FIX"
 }
-MAV_MODE = "MAV_MODE"
 MAV_MODE = {
     0 : "PREFLIGHT",
     80 : "STABILIZE_DISARMED",
@@ -22,6 +21,15 @@ MAV_MODE = {
     66 : "TEST_DISARMED",
     194 : "TEST_ARMED",
 }
+MAV_TYPE_MAP = {
+    0 : "GENERIC",
+    1 : "FIXED_WING",
+    2 : "QUADROTOR",
+    4 : "HELICOPTER",
+    6 : "GCS",
+    10 : "ROVER",
+    11 : "BOAT",
+}
 HEARTBEAT = "HEARTBEAT"
 
 USEFUL_MESSAGES = [
@@ -29,5 +37,4 @@ USEFUL_MESSAGES = [
     ORIENTATION_MESSAGE_NAME,
     POWER_STATUS,
     GPS_RAW_INT,
-    MAV_MODE
 ]
