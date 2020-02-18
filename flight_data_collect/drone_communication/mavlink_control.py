@@ -7,6 +7,9 @@ SERVER_IP = socket.gethostbyname(socket.gethostname())
 def change_mode(connect_address:int, mode:str)->str:
     try:
         mavlink = mavutil.mavlink_connection(SERVER_IP+':'+connect_address)
+        msg = mavlink.wait_heartbeat(timeout=6)
+        if not msg:
+            return {"ERROR": f"No heartbeat from {connect_address} (timeout 6s)"}
         if mode not in mavlink.mode_mapping():
             return {"ERROR": f"{mode} is not a valid mode. Try: {list(mavlink.mode_mapping().keys())}"}
         mavlink.set_mode(mode)
