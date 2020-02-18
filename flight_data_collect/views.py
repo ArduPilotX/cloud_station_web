@@ -1,4 +1,5 @@
 from django.shortcuts import render
+import json
 from django.http import HttpResponse, HttpResponseNotFound
 from flight_data_collect.drone_communication.mavlink_utils import connect_mavlink, get_mavlink_messages_periodically
 from flight_data_collect.drone_communication.mavlink_control import change_mode
@@ -22,6 +23,6 @@ def disconnect_vehicle(request):
 
 def set_mode(request, droneid, mode):
     msg = change_mode(droneid, mode)
-    return HttpResponse(msg, content_type="application/json")
+    return HttpResponse(json.dumps(msg), content_type="text/plain")
 
     
