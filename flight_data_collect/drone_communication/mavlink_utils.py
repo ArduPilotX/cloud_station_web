@@ -12,7 +12,7 @@ SERVER_IP = socket.gethostbyname(socket.gethostname())
 def connect_mavlink(connect_address: str)->bool:
     try:
         mavlink = mavutil.mavlink_connection(SERVER_IP+':'+connect_address) # hackish fix for now
-        msg = mavlink.wait_heartbeat(timeout=8)
+        msg = mavlink.wait_heartbeat(timeout=6)
         return msg is not None
     except OSError as e:
         print(e)
