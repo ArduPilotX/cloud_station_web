@@ -4,7 +4,7 @@ import json
 from flight_data_collect.drone_communication.mavlink_constants import MAVLINK_MSG_ID_SET_MODE
 SERVER_IP = socket.gethostbyname(socket.gethostname())
 
-def change_vehilce_mode(connect_address:int, mode:str)->str:
+def change_mode(connect_address:int, mode:str)->str:
     try:
         mavlink = mavutil.mavlink_connection(SERVER_IP+':'+connect_address)
         if mode not in mavlink.mode_mapping():
