@@ -10,11 +10,11 @@ def change_mode(connect_address:int, mode:str)->str:
         if mode not in mavlink.mode_mapping():
             return {"ERROR": f"{mode} is not a valid mode. Try: {list(mavlink.mode_mapping().keys())}"}
         mavlink.set_mode(mode)
-        ack_msg = mavlink.recv_match(type="COMMAND_ACK", condition=f'COMMAND_ACK.command=={MAVLINK_MSG_ID_SET_MODE}', blocking=True, timeout=6)
+        ack_msg = mavlink.recv_match(type="COMMAND_ACK", condition='COMMAND_ACK.command==11', blocking=True, timeout=6)
         if ack_msg:
             ack_msg = ack_msg.to_dict()
             ack_msg['command'] = 'SET_MODE'
-            ack_msg['result'] = mavutil.mavlink.enums['MAV_RESULT'][ack_msg['result']].description
+            ack_msg['result_description'] = mavutil.mavlink.enums['MAV_RESULT'][ack_msg['result']].description
             return ack_msg
         else:
             return {"ERROR": "No ack_msg received (timeout 6s)."}

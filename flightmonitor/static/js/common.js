@@ -145,7 +145,7 @@ function set_mode() {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             document.querySelector('#telemetry-log').value += (xmlHttp.responseText + '\n');
     };
-    let url = '/flight_data_collect/control/setmode/'+'14550/'+'HOLD/'; // for demo, hard coded drone id and mode type
+    let url = '/flight_data_collect/control/setmode/'+'14550/'+'MANUAL/'; // for demo, hard coded drone id and mode type
     xmlHttp.open("GET", url, true); // true for asynchronous 
     xmlHttp.send(null);
 }
