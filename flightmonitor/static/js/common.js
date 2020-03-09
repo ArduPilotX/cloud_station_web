@@ -50,9 +50,9 @@ browserSocket.onmessage = function (e) {
                 .setLngLat(drone.getLocation())
                 .setPopup(drone.getPopup()
                     .setHTML('<h3>' + drone.getID() + "</h3><p>" + "Longitude: " + drone.getLong() + " Latitude: " + drone.getLat() 
-                    + "</p>" + '<form action="javascript:set_mode(' + droneID + ',mode.value)">' + SETMODE_CONST)
+                    + "</p>" + '<form action="javascript:set_mode(' + droneID + ',mode.value)">' + SETMODE_CONST
                     + "</p>" + '<input type="button" value="arm" onclick="javascript:set_arm('+droneID+')">'
-                    + "</p>" + '<input type="button" value="disarm" onclick="javascript:set_arm('+droneID+', true)">')
+                    + "</p>" + '<input type="button" value="disarm" onclick="javascript:set_arm('+droneID+', true)">'))
                 .addTo(map));
         }
         var dytable = document.getElementById("dyTable");
