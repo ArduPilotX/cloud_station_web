@@ -44,7 +44,7 @@ def set_waypoints(connect_address:int, waypoints:list)->bool:
     '''waypoints should be given in this form:
         [(lat0,lon10,alt0), (lat1,lon1,alt1), ...]'''
     try:
-        mavlink = mavutil.mavlink_connection(SERVER_IP+':'+connect_address)
+        mavlink = mavutil.mavlink_connection(SERVER_IP+':'+str(connect_address))
         mavlink.wait_heartbeat(timeout=6)
         wp = mavwp.MAVWPLoader()                                                    
         seq = 1
@@ -75,9 +75,8 @@ def set_waypoints(connect_address:int, waypoints:list)->bool:
 
 def set_arm(connect_address:int, is_disarm=False):
     try:
-        mavlink = mavutil.mavlink_connection(SERVER_IP+':'+connect_address)
+        mavlink = mavutil.mavlink_connection(SERVER_IP+':'+str(connect_address))
         msg = mavlink.wait_heartbeat(timeout=6)
-        connect_address = int(connect_address)
         if not msg:
             return {'ERROR': f'No heartbeat from {connect_address} (timeout 6s)', 'droneid':connect_address}
         if is_disarm:
