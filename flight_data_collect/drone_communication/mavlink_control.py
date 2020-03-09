@@ -80,6 +80,28 @@ def set_arm(connect_address:int, is_disarm=False):
         connect_address = int(connect_address)
         if not msg:
             return {'ERROR': f'No heartbeat from {connect_address} (timeout 6s)', 'droneid':connect_address}
-        print(mavlink.motors_armed)
+        if is_disarm:
+            mavlink.mav.command_long_send(
+                mavlink.target_system,
+                mavlink.target_component,
+                mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,
+                0,
+                0, 0, 0, 0, 0, 0, 0)
+        else:
+            mavlink.mav.command_long_send(
+                mavlink.target_system,
+                mavlink.target_component,
+                mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,
+                0,
+                1, 0, 0, 0, 0, 0, 0)
+        ack_msg = get_ack_msg(connect_address, mavlink, 'COMMAND_ACK')
+        if ack_msg:
+            return ack_msg
+        else:
+            return {'ERROR': 'No ack_msg received (timeout 6s).', 'droneid': connect_address}
+    except Exception as e:
+        print(e)
+        return {'ERROR': 'Arm/Disarm command failed!', 'droneid':connect_address}
+        
         
 
