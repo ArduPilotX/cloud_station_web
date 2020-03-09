@@ -52,7 +52,7 @@ browserSocket.onmessage = function (e) {
                     .setHTML('<h3>' + drone.getID() + "</h3><p>" + "Longitude: " + drone.getLong() + " Latitude: " + drone.getLat() 
                     + "</p>" + '<form action="javascript:set_mode(' + droneID + ',mode.value)">' + SETMODE_CONST
                     + "</p>" + '<input type="button" value="arm" onclick="javascript:set_arm('+droneID+')">'
-                    + "</p>" + '<input type="button" value="disarm" onclick="javascript:set_arm('+droneID+', true)">'))
+                    + '<input type="button" value="disarm" onclick="javascript:set_arm('+droneID+', true)">'))
                 .addTo(map));
         }
         var dytable = document.getElementById("dyTable");
@@ -199,14 +199,14 @@ function set_mode(droneID, mode) {
     return false;
 }
 
-function set_arm(droneID, is_disarm=False) {
+function set_arm(droneID, is_disarm=false) {
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             document.querySelector('#telemetry-log').value += (xmlHttp.responseText + '\n');
     };
     let url;
-    if (is_disarm==True)
+    if (is_disarm==true)
         url = '/flight_data_collect/control/arm/' + droneID.toString() + '/'
     else
         url = '/flight_data_collect/control/disarm/' + droneID.toString() + '/'
