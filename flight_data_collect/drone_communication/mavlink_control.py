@@ -85,14 +85,14 @@ def set_arm(connect_address:int, is_disarm=False):
                 mavlink.target_component,
                 mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,
                 0,
-                0, 0, 0, 0, 0, 0, 0)
+                1, 0, 0, 0, 0, 0, 0)
         else:
             mavlink.mav.command_long_send(
                 mavlink.target_system,
                 mavlink.target_component,
                 mavutil.mavlink.MAV_CMD_COMPONENT_ARM_DISARM,
                 0,
-                1, 0, 0, 0, 0, 0, 0)
+                0, 0, 0, 0, 0, 0, 0)
         ack_msg = get_ack_msg(connect_address, mavlink, 'COMMAND_ACK')
         if not ack_msg:
             return {'ERROR': 'No ack_msg received (timeout 6s).', 'droneid': connect_address}
