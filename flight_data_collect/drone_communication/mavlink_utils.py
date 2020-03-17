@@ -41,7 +41,9 @@ def get_mavlink_messages(connect_address):
             send_message_to_clients(json.dumps(msg))            
             if timeout_count > 6:
                 send_message_to_clients(json.dumps({'ERROR': 'Disconnected because of continous timeout.', 'droneid': int(connect_address)}))
-                Vehicle.objects.get(droneid=connect_address).is_connected = False
+                v = Vehicle.objects.get(droneid=connect_address)
+                v.is_connected = False
+                v.save()
                 break
             
             
