@@ -32,7 +32,7 @@ def set_mode(request, droneid, mode):
     return HttpResponse(json.dumps(msg), content_type="text/plain")
 
 def fly_to(request, droneid, lat, lon, alt):
-    msg = fly_to_point(droneid, lat, lon, alt)
+    msg = fly_to_point(int(droneid), float(lat), float(lon), float(alt))
     return HttpResponse(json.dumps(msg), content_type="text/plain")
 
 def set_waypoint(request, droneid, lat, lon, alt):
