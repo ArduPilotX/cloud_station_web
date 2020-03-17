@@ -107,7 +107,7 @@ def set_arm(connect_address:int, is_disarm=False):
         print(e)
         return {'ERROR': 'Arm/Disarm command failed!'+str(e), 'droneid':connect_address}
 
-def fly_to(connect_address:int, lat, lon, alt):
+def fly_to_point(connect_address:int, lat, lon, alt):
     try :
         mavlink = mavutil.mavlink_connection(SERVER_IP+':'+str(connect_address))
         msg = mavlink.wait_heartbeat(timeout=6)
